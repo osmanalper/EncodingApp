@@ -16,6 +16,7 @@ public class EncodingBase29 implements Encoding{
     private boolean isHexEncoded;
 
     public String encode(String encodeValue){
+        encodeValue = encodeValue.replace("%09","");
         boolean isHex = UtilEncoding.isStringHex(encodeValue);
         String encodedValue;
         if(isHex){
@@ -47,7 +48,14 @@ public class EncodingBase29 implements Encoding{
             decodedValue+=remainingChunkLSB.toUpperCase();
         }
         if(isHexEncoded){
-            return decodedValue;
+            char[] charsOfDecodedValue = decodedValue.toCharArray();
+            String hexDisplay="";
+            for(int i=0; i<charsOfDecodedValue.length;i+=2){
+                hexDisplay+=charsOfDecodedValue[i];
+                hexDisplay+=charsOfDecodedValue[i+1];
+                hexDisplay+=" ";
+            }
+            return hexDisplay;
         } else {
             return UtilEncoding.convertHexToString(decodedValue);
         }
